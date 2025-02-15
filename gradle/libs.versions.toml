@@ -1,11 +1,11 @@
 [versions]
-androidGradlePlugin = "8.8.0"
+androidGradlePlugin = "8.8.1"
 androidxCore = "1.15.0"
 androidxLifecycle = "2.8.7"
-androidxActivity = "1.9.3"
-androidxComposeBom = "2024.12.01"
+androidxActivity = "1.10.0"
+androidxComposeBom = "2025.02.00"
 androidxHilt = "1.2.0"
-androidxNavigation = "2.8.5"
+androidxNavigation = "2.8.7"
 androidxRoom = "2.6.1"
 androidxTest = "1.6.1"
 androidxTestExt = "1.2.1"
@@ -13,8 +13,8 @@ androidxTestRunner = "1.6.2"
 coroutines = "1.10.1"
 hilt = "2.55"
 junit = "4.13.2"
-kotlin = "2.1.0"
-ksp = "2.1.0-1.0.29"
+kotlin = "2.1.10"
+ksp = "2.1.10-1.0.30"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
