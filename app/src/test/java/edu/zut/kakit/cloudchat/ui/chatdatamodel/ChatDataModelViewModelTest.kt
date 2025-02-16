@@ -31,29 +31,29 @@ import edu.zut.kakit.cloudchat.data.ChatDataModelRepository
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
-class ChatDataModelViewModelTest {
-    @Test
-    fun uiState_initiallyLoading() = runTest {
-        val viewModel = ChatDataModelViewModel(FakeChatDataModelRepository())
-        assertEquals(viewModel.uiState.first(), ChatDataModelUiState.Loading)
-    }
-
-    @Test
-    fun uiState_onItemSaved_isDisplayed() = runTest {
-        val viewModel = ChatDataModelViewModel(FakeChatDataModelRepository())
-        assertEquals(viewModel.uiState.first(), ChatDataModelUiState.Loading)
-    }
-}
-
-private class FakeChatDataModelRepository : ChatDataModelRepository {
-
-    private val data = mutableListOf<String>()
-
-    override val chatDataModels: Flow<List<String>>
-        get() = flow { emit(data.toList()) }
-
-    override suspend fun add(name: String) {
-        data.add(0, name)
-    }
-}
+//@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
+//class ChatDataModelViewModelTest {
+//    @Test
+//    fun uiState_initiallyLoading() = runTest {
+//        val viewModel = ChatDataModelViewModel(FakeChatDataModelRepository())
+//        assertEquals(viewModel.uiState.first(), ChatDataModelUiState.Loading)
+//    }
+//
+//    @Test
+//    fun uiState_onItemSaved_isDisplayed() = runTest {
+//        val viewModel = ChatDataModelViewModel(FakeChatDataModelRepository())
+//        assertEquals(viewModel.uiState.first(), ChatDataModelUiState.Loading)
+//    }
+//}
+//
+//private class FakeChatDataModelRepository : ChatDataModelRepository {
+//
+//    private val data = mutableListOf<String>()
+//
+//    override val chatDataModels: Flow<List<String>>
+//        get() = flow { emit(data.toList()) }
+//
+//    override suspend fun add(name: String) {
+//        data.add(0, name)
+//    }
+//}

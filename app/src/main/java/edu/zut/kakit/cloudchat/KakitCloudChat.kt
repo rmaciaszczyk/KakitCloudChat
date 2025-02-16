@@ -17,7 +17,8 @@
 package edu.zut.kakit.cloudchat
 
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class KakitCloudChat : Application()
+class KakitCloudChat : Application() {}

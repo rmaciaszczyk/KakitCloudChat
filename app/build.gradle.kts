@@ -22,6 +22,9 @@ plugins {
     alias(libs.plugins.hilt.gradle)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.services)
+
 }
 
 android {
@@ -30,7 +33,7 @@ android {
 
     defaultConfig {
         applicationId = "edu.zut.kakit.cloudchat"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -79,6 +82,8 @@ android {
 
 dependencies {
 
+    implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.firestore.ktx)
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     androidTestImplementation(composeBom)
@@ -119,7 +124,10 @@ dependencies {
 
     // Firebase
     implementation (libs.firebase.auth.ktx)
+    implementation (platform(libs.firebase.bom))
 
+    //KotlinX
+    implementation(libs.kotlinx.serialization.json)
 
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.junit)

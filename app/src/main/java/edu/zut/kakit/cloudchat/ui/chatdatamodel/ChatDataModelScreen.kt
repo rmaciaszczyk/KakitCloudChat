@@ -36,22 +36,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import edu.zut.kakit.cloudchat.data.firebase.ChatDataModel
+import kotlinx.serialization.Serializable
 
 @Composable
 fun ChatDataModelScreen(modifier: Modifier = Modifier, viewModel: ChatDataModelViewModel = hiltViewModel()) {
-    val items by viewModel.uiState.collectAsStateWithLifecycle()
-    if (items is ChatDataModelUiState.Success) {
+    val items by viewModel.messages.collectAsStateWithLifecycle(emptyList())
+    //if (items is ChatDataModelUiState.Success) {
         ChatDataModelScreen(
-            items = (items as ChatDataModelUiState.Success).data,
+            //items = (items as ChatDataModelUiState.Success).data,
+            items = items,
             onSave = viewModel::addChatDataModel,
             modifier = modifier
         )
-    }
+    //}
 }
 
 @Composable
 internal fun ChatDataModelScreen(
-    items: List<String>,
+    items: List<ChatDataModel>,
     onSave: (name: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -67,11 +70,11 @@ internal fun ChatDataModelScreen(
             )
 
             Button(modifier = Modifier.width(96.dp), onClick = { onSave(nameChatDataModel) }) {
-                Text("Save")
+                Text("Send")
             }
         }
         items.forEach {
-            Text("Saved item: $it")
+            Text("Username: ${it.ownerId}, Message: ${it.message}")
         }
     }
 }
@@ -82,7 +85,7 @@ internal fun ChatDataModelScreen(
 @Composable
 private fun DefaultPreview() {
     MyApplicationTheme {
-        ChatDataModelScreen(listOf("Compose", "Room", "Kotlin"), onSave = {})
+        ChatDataModelScreen(listOf(ChatDataModel()), onSave = {})
     }
 }
 
@@ -90,6 +93,6 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        ChatDataModelScreen(listOf("Compose", "Room", "Kotlin"), onSave = {})
+        ChatDataModelScreen(listOf(ChatDataModel()), onSave = {})
     }
 }
