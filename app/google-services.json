@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "442805862844",
+    "project_id": "kakit-cloudchat",
+    "storage_bucket": "kakit-cloudchat.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442805862844:android:6959372c703ab69dceebb9",
+        "android_client_info": {
+          "package_name": "edu.zut.kakit.cloudchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZ82kKcVdua2y_O6ugdfDcwXdJhnzukzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
