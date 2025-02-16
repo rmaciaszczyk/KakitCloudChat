@@ -16,13 +16,19 @@
 
 package edu.zut.kakit.cloudchat.ui.chatdatamodel
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import edu.zut.kakit.cloudchat.ui.theme.MyApplicationTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,7 +37,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -59,27 +67,55 @@ internal fun ChatDataModelScreen(
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {
-        var nameChatDataModel by remember { mutableStateOf("Compose") }
+        var nameChatDataModel by remember { mutableStateOf("") }
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
+
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
                 value = nameChatDataModel,
                 onValueChange = { nameChatDataModel = it }
             )
 
-            Button(modifier = Modifier.width(96.dp), onClick = { onSave(nameChatDataModel) }) {
+            Button(modifier = Modifier.requiredWidth(96.dp)
+                .padding(start = 4.dp, end = 4.dp),
+                enabled = nameChatDataModel.isNotEmpty(),
+                onClick = { if (nameChatDataModel.isNotEmpty()) {
+                    onSave(nameChatDataModel); nameChatDataModel = "" }
+                }
+            )
+            {
                 Text("Send")
             }
         }
-        items.forEach {
-            Text("Username: ${it.ownerId}, Message: ${it.message}")
+        LazyColumn(modifier = Modifier.weight(1f)) {
+            items(items) {
+                MessageItem(it)
+            }
         }
     }
 }
 
+@Composable
+fun MessageItem(chatDataModel: ChatDataModel) {
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
+            .background(Color.LightGray, RoundedCornerShape(8.dp))
+            .padding(8.dp)
+    ) {
+        Text(text = "Username: ${chatDataModel.ownerId}")
+        Text(text = "Message: ${chatDataModel.message}")
+    }
+}
+
 // Previews
+
 
 @Preview(showBackground = true)
 @Composable
