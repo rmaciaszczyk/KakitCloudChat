@@ -21,6 +21,7 @@ import androidx.compose.foundation.border
 import edu.zut.kakit.cloudchat.ui.theme.MyApplicationTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,11 +29,14 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,51 +58,112 @@ fun ChatDataModelScreen(modifier: Modifier = Modifier, viewModel: ChatDataModelV
         ChatDataModelScreen(
             //items = (items as ChatDataModelUiState.Success).data,
             items = items,
-            onSave = viewModel::addChatDataModel,
+            onSave = viewModel::sendMessage,
             modifier = modifier
         )
     //}
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ChatDataModelScreen(
     items: List<ChatDataModel>,
     onSave: (name: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier) {
-        var nameChatDataModel by remember { mutableStateOf("") }
+    var nameChatDataModel by remember { mutableStateOf("") }
+    val listState = rememberLazyListState()
+
+    Column(modifier = modifier) {
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            state = listState,
+            reverseLayout = true,
+            verticalArrangement = Arrangement.Bottom,
+            contentPadding = PaddingValues(bottom = 8.dp)
+        ) {
+            items(items.reversed()) {
+                MessageItem(it)
+            }
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 24.dp),
-
+                .padding(top = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
                 value = nameChatDataModel,
-                onValueChange = { nameChatDataModel = it }
+                onValueChange = { nameChatDataModel = it },
+                modifier = Modifier.weight(1f),
+                placeholder = { Text("Enter your message") }
             )
 
-            Button(modifier = Modifier.requiredWidth(96.dp)
-                .padding(start = 4.dp, end = 4.dp),
+            Button(
+                modifier = Modifier
+                    .requiredWidth(96.dp)
+                    .padding(start = 4.dp, end = 4.dp),
                 enabled = nameChatDataModel.isNotEmpty(),
-                onClick = { if (nameChatDataModel.isNotEmpty()) {
-                    onSave(nameChatDataModel); nameChatDataModel = "" }
+                onClick = {
+                    if (nameChatDataModel.isNotEmpty()) {
+                        onSave(nameChatDataModel)
+                        nameChatDataModel = ""
+                    }
                 }
-            )
-            {
+            ) {
                 Text("Send")
             }
         }
-        LazyColumn(modifier = Modifier.weight(1f)) {
-            items(items) {
-                MessageItem(it)
-            }
+    }
+    LaunchedEffect(items) {
+        if (items.isNotEmpty()) {
+            listState.animateScrollToItem(0)
         }
     }
 }
+
+//@Composable
+//internal fun ChatDataModelScreen(
+//    items: List<ChatDataModel>,
+//    onSave: (name: String) -> Unit,
+//    modifier: Modifier = Modifier
+//) {
+//    Column(modifier) {
+//        var nameChatDataModel by remember { mutableStateOf("") }
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(bottom = 24.dp),
+//
+//            horizontalArrangement = Arrangement.spacedBy(16.dp),
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            TextField(
+//                value = nameChatDataModel,
+//                onValueChange = { nameChatDataModel = it }
+//            )
+//
+//            Button(modifier = Modifier.requiredWidth(96.dp)
+//                .padding(start = 4.dp, end = 4.dp),
+//                enabled = nameChatDataModel.isNotEmpty(),
+//                onClick = { if (nameChatDataModel.isNotEmpty()) {
+//                    onSave(nameChatDataModel); nameChatDataModel = "" }
+//                }
+//            )
+//            {
+//                Text("Send")
+//            }
+//        }
+//        LazyColumn(modifier = Modifier.weight(1f)) {
+//            items(items) {
+//                MessageItem(it)
+//            }
+//        }
+//    }
+//}
 
 @Composable
 fun MessageItem(chatDataModel: ChatDataModel) {
