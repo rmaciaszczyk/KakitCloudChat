@@ -6,6 +6,6 @@ data class ChatDataModel(
 
     @DocumentId val id: String = "",
     val message: String = "",
-    val ownerId: String = "",
+    val sender: String = "",
     val timestamp: Long = System.currentTimeMillis()
 )

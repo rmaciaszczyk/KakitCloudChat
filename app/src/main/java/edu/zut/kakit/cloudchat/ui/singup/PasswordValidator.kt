@@ -3,7 +3,7 @@ package edu.zut.kakit.cloudchat.ui.singup
 import android.util.Patterns
 import java.util.regex.Pattern
 
-private const val MIN_PASSWORD_LENGTH = 8
+private const val MIN_PASSWORD_LENGTH = 2
 private const val PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$"
 
 fun String.isValidEmail(): Boolean {

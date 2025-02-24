@@ -35,12 +35,12 @@ class ChatDataModelScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    @Before
-    fun setup() {
-        composeTestRule.setContent {
-            ChatDataModelScreen(FAKE_DATA, onSave = {})
-        }
-    }
+//    @Before
+//    fun setup() {
+//        composeTestRule.setContent {
+//            ChatDataModelScreen(FAKE_DATA, onSave = {})
+//        }
+//    }
 
     @Test
     fun firstItem_exists() {

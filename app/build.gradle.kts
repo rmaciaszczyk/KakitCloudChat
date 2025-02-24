@@ -24,6 +24,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlin.serialization)
+
 
 }
 

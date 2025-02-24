@@ -21,9 +21,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
+import edu.zut.kakit.cloudchat.data.model.ErrorMessage
 import edu.zut.kakit.cloudchat.ui.theme.MyApplicationTheme
 
 @AndroidEntryPoint
@@ -32,14 +36,22 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             MyApplicationTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     MainNavigation()
                 }
             }
         }
     }
+    fun getErrorMessage(error: ErrorMessage): String {
+        return when (error) {
+            is ErrorMessage.StringError -> error.message
+            is ErrorMessage.IdError -> this@MainActivity.getString(error.message)
+        }
+    }
+
 }

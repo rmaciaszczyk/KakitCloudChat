@@ -32,6 +32,9 @@ import edu.zut.kakit.cloudchat.data.firebase.ChatDataModel
 import edu.zut.kakit.cloudchat.ui.chatdatamodel.ChatDataModelUiState.Error
 import edu.zut.kakit.cloudchat.ui.chatdatamodel.ChatDataModelUiState.Loading
 import edu.zut.kakit.cloudchat.ui.chatdatamodel.ChatDataModelUiState.Success
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -54,26 +57,42 @@ class ChatDataModelViewModel @Inject constructor(
     }
 
     val messages = messageRepository.getMessages(authRepository.currentUserIdFlow)
+    private val _errorMessage = MutableSharedFlow<String?>()
+    val errorMessage: SharedFlow<String?>
+        get() = _errorMessage.asSharedFlow()
 
     fun sendMessage(message: String) {
-        var ownerId = authRepository.currentUser?.uid
-        if (ownerId.isNullOrBlank()) {
-            ownerId="anonymous"
+        var sender : String = ""
 
-//            showErrorSnackbar(ErrorMessage.IdError(R.string.could_not_find_account))
-//            return
+        if( (authRepository.currentUser?.isAnonymous == true) || (authRepository.currentUser?.uid.isNullOrBlank()))
+        {
+            sender="anonymous"
+        }
+        else
+        {
+            sender=authRepository.currentUser?.email.toString()
         }
 
         val ChatDataModel = ChatDataModel(
-            ownerId = ownerId,
+            sender = sender,
             message = message
         )
 
         viewModelScope.launch {
-            messageRepository.sendMessage(ChatDataModel)
+            try {
+                messageRepository.sendMessage(ChatDataModel)
+            }
+            catch (e: Exception) {
+                _errorMessage.emit(e.message)
+            }
+
         }
     }
-
+    fun clearErrorMessage() {
+        viewModelScope.launch {
+            _errorMessage.emit(null)
+        }
+    }
 
 }
 

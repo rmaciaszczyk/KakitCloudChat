@@ -23,14 +23,36 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import edu.zut.kakit.cloudchat.ui.chatdatamodel.ChatDataModelRoute
 import edu.zut.kakit.cloudchat.ui.chatdatamodel.ChatDataModelScreen
+import edu.zut.kakit.cloudchat.ui.signin.SignInRoute
+import edu.zut.kakit.cloudchat.ui.signin.SignInScreen
+import edu.zut.kakit.cloudchat.ui.singup.SignUpRoute
+import edu.zut.kakit.cloudchat.ui.singup.SignUpScreen
 
 @Composable
-fun MainNavigation() {
+fun MainNavigation(
+
+) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "main") {
-        composable("main") { ChatDataModelScreen(modifier = Modifier.padding(16.dp)) }
+
+
+    NavHost(navController = navController, startDestination = SignInRoute) {
+        composable<ChatDataModelRoute> { ChatDataModelScreen(modifier = Modifier.padding(16.dp)) }
         // TODO: Add more destinations
+        composable<SignInRoute> { SignInScreen(
+            openHomeScreen = {
+                navController.navigate(ChatDataModelRoute) { launchSingleTop = true }
+            },
+            openSignUpScreen = {
+                navController.navigate(SignUpRoute) { launchSingleTop = true }
+            },
+        ) }
+        composable<SignUpRoute> { SignUpScreen(
+            openHomeScreen = {
+                navController.navigate(ChatDataModelRoute) { launchSingleTop = true }
+            },
+        ) }
     }
 }
