@@ -47,11 +47,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-    fun getErrorMessage(error: ErrorMessage): String {
-        return when (error) {
-            is ErrorMessage.StringError -> error.message
-            is ErrorMessage.IdError -> this@MainActivity.getString(error.message)
-        }
-    }
-
 }
